@@ -80,15 +80,15 @@ const Model = ({
           </div>
           <div className="btn-container">
             <button onClick={close}>Cancel</button>
-              <button
-                className="btn-save"
-                onClick={() => {
-                  addEvent(event);
-                  close();
-                }}
-              >
-                Save
-              </button>
+            <button
+              className="btn-save"
+              onClick={() => {
+                addEvent(event);
+                close();
+              }}
+            >
+              Save
+            </button>
           </div>
         </>
       )}
@@ -99,10 +99,18 @@ const Model = ({
             <p>Date: {new Date(event.start).toDateString()}</p>
             <p>Location: {event.location}</p>
           </div>
-          <div className="btn-container" style={{justifyContent: "flex-end", gap: "10px"}}>
-            <button onClick={() => setIsEdit(true)}>Edit</button>
+          <div
+            className="btn-container"
+            style={{ justifyContent: "flex-end", gap: "10px" }}
+          >
             <button
-              className="btn-delete"
+              className=".mm-popup__btn--info"
+              onClick={() => setIsEdit(true)}
+            >
+              Edit
+            </button>
+            <button
+              className="btn-delete .mm-popup__btn--danger"
               onClick={() => deleteEvent(existing_event.id)}
             >
               delete
@@ -138,7 +146,7 @@ const EventTracker = (props) => {
       end: new Date(),
     },
   ]);
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [selectedDate, setSelectedDate] = React.useState();
   const [existing_event, setExistingEvent] = React.useState(null);
 
   const [option, setOption] = React.useState("all");
@@ -155,6 +163,7 @@ const EventTracker = (props) => {
   const closeModel = () => {
     setOpenModel("");
     setExistingEvent(null);
+    setSelectedDate(null);
   };
   const addEvent = (event) => {
     if (openModel === "EDIT_EVENT") {
@@ -192,6 +201,25 @@ const EventTracker = (props) => {
       </div>
     );
   };
+  const CustomDateHeader = ({ label, date, selectedDate, openPopup }) => {
+    const isSelected =
+      selectedDate &&
+      selectedDate.getFullYear() === date.getFullYear() &&
+      selectedDate.getMonth() === date.getMonth() &&
+      selectedDate.getDate() === date.getDate();
+
+    return (
+      <div>
+        <div>{label}</div>
+
+        {isSelected && (
+          <button className="btn" style={{ marginTop: 4 }} onClick={openPopup}>
+            Create Event
+          </button>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -220,20 +248,33 @@ const EventTracker = (props) => {
             />
           ),
           event: CustomEvent,
+          month: {
+            dateHeader: (props) => (
+              <CustomDateHeader
+                {...props}
+                selectedDate={selectedDate}
+                openPopup={() => {
+                  setExistingEvent(null);
+                  setOpenModel("ADD_EVENT");
+                }}
+              />
+            ),
+          },
         }}
         onSelectEvent={(e) => {
           setExistingEvent(e);
           setOpenModel("EDIT_EVENT");
         }}
         onSelectSlot={(slotInfo) => {
-          console.log("Slot clicked:", slotInfo);
+          setSelectedDate(new Date(slotInfo.start));
         }}
         // Click on date header
-        onDrillDown={(date) => {
-          setExistingEvent(null);
-          setSelectedDate(date);
-          setOpenModel("ADD_EVENT");
-        }}
+        // onDrillDown={(date) => {
+        //   setExistingEvent(null);
+        //   setSelectedDate(date);
+        //   setOpenModel("ADD_EVENT");
+        // }}
+        selectable
       />
     </div>
   );

@@ -40,18 +40,21 @@ const CustomToolbar = ({ label, onNavigate, setOption }) => {
       {/* RIGHT SIDE: Your custom three buttons */}
       <div>
         <button
+          className="btn-1"
           onClick={() => setOption("all")}
           style={{ marginRight: 10, backgroundColor: "var(--blue-color)" }}
         >
           All
         </button>
         <button
+          className="btn-2"
           onClick={() => setOption("past")}
           style={{ marginRight: 10, backgroundColor: "var(--pink-color)" }}
         >
           Past
         </button>
         <button
+          className="btn-3"
           onClick={() => setOption("upcoming")}
           style={{ marginRight: 10, backgroundColor: "var(--green-color)" }}
         >
