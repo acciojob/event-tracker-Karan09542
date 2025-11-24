@@ -78,10 +78,10 @@ const Model = ({
               }
             />
           </div>
-          <div className="btn-container">
+          <div className="btn-container mm-popup__box__footer__right-space">
             <button onClick={close}>Cancel</button>
             <button
-              className="btn-save"
+              className="btn-save mm-popup__btn"
               onClick={() => {
                 addEvent(event);
                 close();
@@ -110,7 +110,7 @@ const Model = ({
               Edit
             </button>
             <button
-              className="btn-delete .mm-popup__btn--danger"
+              className="btn-delete mm-popup__btn--danger"
               onClick={() => deleteEvent(existing_event.id)}
             >
               delete
@@ -121,32 +121,10 @@ const Model = ({
     </div>
   );
 };
-const EventTracker = (props) => {
+const EventTracker = () => {
   const [openModel, setOpenModel] = React.useState("");
-  const [myEventsList, setMyEventsList] = useState([
-    {
-      id: 1,
-      title: "Haribahjan",
-      location: "amravati",
-      start: new Date(),
-      end: new Date(new Date().getTime() + 10 * 1000),
-    },
-    {
-      id: 2,
-      title: "Haribahjan",
-      location: "Delhi",
-      start: new Date(),
-      end: new Date(),
-    },
-    {
-      id: 3,
-      title: "Haribahjan",
-      location: "kashi",
-      start: new Date(),
-      end: new Date(),
-    },
-  ]);
-  const [selectedDate, setSelectedDate] = React.useState();
+  const [myEventsList, setMyEventsList] = useState([]);
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
   const [existing_event, setExistingEvent] = React.useState(null);
 
   const [option, setOption] = React.useState("all");
@@ -174,6 +152,7 @@ const EventTracker = (props) => {
         { ...event, id: myEventsList.length + 1 },
       ]);
     }
+
     closeModel();
     if (existing_event) {
       setExistingEvent(null);
